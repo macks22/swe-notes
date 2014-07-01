@@ -15,8 +15,9 @@ uniformly.
 
 ### Applicability
 
-1.  You want to represent part-whole hierarchies
-2.  Want clients to be able to ignore difference between compositions of objects
+1.  You want to represent part-whole hierarchies (think trees with primitives
+    and composites).
+2.  You want clients to be able to ignore difference between compositions of objects
     and individual objects. Clients will treat all objects in the composite
     structure uniformly.
 
@@ -26,8 +27,8 @@ uniformly.
 
 1.  Recursive composition structures allow clients to accept a composite object
     wherever they would expect a primitive one.
-    1.1 Simplifies client code by reducing number of implementation cases
-    1.2 Makes it easier to add new kinds of components; no changes to clients
+    1. Simplifies client code by reducing number of implementation cases
+    2. Makes it easier to add new kinds of components; no changes to clients
 
 #### Cons
 
@@ -36,15 +37,15 @@ uniformly.
 
 ### Implementation
 
-1.  Explicit parent references
-2.  Sharing components
-3.  Maximizing Component interface
-4.  Declaring the child management operations
-5.  Should Component implement a list of Components?
-6.  Child ordering
+1.  Explicit parent references (doubly-linked vs. singly-linked list for chain)
+2.  Sharing components (can a component have more than one parent)
+3.  Maximizing Component interface (default cases should work for leaves)
+4.  Declaring the child management operations (component defines composite interface)
+5.  Should Component implement a list of Components? (or leave it to composite?)
+6.  Child ordering (ensure chain is configured properly)
 7.  Caching to improve performance
 8.  Who should delete components?
-9.  What's the best data structure for storing components?
+9.  What's the best data structure for storing components? (see #1)
 
 ## Chain of Responsibility (CoR)
 
@@ -57,16 +58,16 @@ request along the chain until an ojbect handles it.
 ### Key Concepts
 
 1.  Decouple sender from reciever by constructing a chain
-    1.1 sender passes request to successor, recurse from there
-    1.2 each successor gets a chance to handle request if capable
-    1.3 implicit receiver: sender doesn't know who will handle it in advance
+    1. sender passes request to successor, recurse from there
+    2. each successor gets a chance to handle request if capable
+    3. implicit receiver: sender doesn't know who will handle it in advance
 
 ### Applicability
 
 1.  More than one object may handle a request, and the handler isn't known a
     priori -- should be ascertained automatically.
 2.  You want to issue a request to one of several objects without explicitly
-    specifying the reciever.
+    specifying the receiver.
 3.  The set of objects that can handle a request should be specified
     dynamically.
 
@@ -74,24 +75,24 @@ request along the chain until an ojbect handles it.
 
 #### Pros
 
-1.  Reduced coupling -- frees sender from knowing about receiver
+1.  Reduced coupling -- frees sender from knowing about receiver.
 2.  Added flexibility in assigning responsibilities to objects -- dynamically
     changing the chain at runtime makes it highly configurable.
 
 #### Cons
 
-1.  Receipt isn't guaranteed -- request can fall off end of chain
+1.  Receipt isn't guaranteed -- request can fall off the end of the chain.
 
 ### Implementation
 
 1.  The successor chain
 2.  Connecting successors
-3.  Representing requests
+3.  Representing requests (integer codes, strings, objects?)
 
 ### Similar ideas
 
 1.  Event propogation in the DOM
-    1.1 event-driven programming in general
+    1. event-driven programming in general
 
 ## Command
 
@@ -105,12 +106,12 @@ with different requests, queue or log requests, and support undoable operations.
 ### Applicability
 
 1.  Parameterize objects by an action to perform
-    1.1 Commands are an OO replacement for callbacks
+    1. Commands are an OO substitute for callbacks
 2.  Specify, queue, and execute requests at different times
-    2.1 Command object can have lifetime independent of original request
+    1. Command object can have lifetime independent of original request
 3.  Support undo; command can store state for reversal and a history of commands
     can be used to reverse one or more at a time.
-    3.1 Usually need extra methods, such as load, store, unexecute, etc.
+    1. Usually need extra methods, such as load, store, unexecute, etc.
 4.  Architect a transaction-oriented system.
 
 ### Consequences
@@ -121,7 +122,7 @@ with different requests, queue or log requests, and support undoable operations.
     to perform it.
 2.  Commands become first-class objects, which can be subclassed and
     manipulated.
-    2.1 Easy to add new commands; no need to change existing classes.
+    1. Easy to add new commands; no need to change existing classes.
 3.  Can assemble commands into Composite commands using the composite pattern.
 
 #### Cons
@@ -133,4 +134,3 @@ with different requests, queue or log requests, and support undoable operations.
 1.  How intelligent should a command be?
 2.  Should undo/redo be supported?
 3.  Avoiding error accumulation in the undo process.
-
